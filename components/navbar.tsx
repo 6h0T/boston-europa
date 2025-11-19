@@ -1,103 +1,135 @@
 "use client"
 
-import { useState } from "react"
-import Link from "next/link"
-import { Menu, X } from "lucide-react"
+import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
+import { useTranslation } from "react-i18next"
+import StaggeredMenu from "@/components/ui/staggered-menu"
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [menuColor, setMenuColor] = useState("#ffffff")
+  const pathname = usePathname()
+  const isHomePage = pathname === "/"
+  const { t, i18n } = useTranslation()
+  const [currentLang, setCurrentLang] = useState(i18n.language || 'es')
+
+  useEffect(() => {
+    const handleLanguageChanged = (lng: string) => {
+      console.log('Language changed event:', lng)
+      setCurrentLang(lng)
+    }
+
+    i18n.on('languageChanged', handleLanguageChanged)
+    
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged)
+    }
+  }, [i18n])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = Array.from(document.querySelectorAll("section"))
+      const scrollPosition = window.scrollY + 100
+
+      let currentColor = "#ffffff" // Por defecto blanco
+
+      if (isHomePage) {
+        // Lógica para la landing page (home)
+        sections.forEach((section, index) => {
+          const sectionTop = section.offsetTop
+          const sectionBottom = sectionTop + section.offsetHeight
+
+          if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            // Índice 0: Hero (blanco)
+            // Índice 1: Proceso Simple (azul)
+            // Índice 2: Por qué elegir (blanco)
+            // Índice 3: Para qué invertir (azul)
+            // Índice 4: Conoce tu perfil (blanco)
+            
+            if (index === 0 || index === 2 || index === 4) {
+              currentColor = "#ffffff"
+            } else {
+              currentColor = "#1d3969"
+            }
+          }
+        })
+      } else {
+        // Lógica para otras páginas
+        if (sections.length > 0) {
+          const firstSection = sections[0]
+          const firstSectionBottom = firstSection.offsetTop + firstSection.offsetHeight
+
+          // Blanco en la primera sección, azul en el resto
+          if (scrollPosition < firstSectionBottom) {
+            currentColor = "#ffffff"
+          } else {
+            currentColor = "#1d3969"
+          }
+        }
+      }
+
+      setMenuColor(currentColor)
+    }
+
+    handleScroll() // Ejecutar al montar
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [isHomePage])
+  const handleLanguageChange = (language: string) => {
+    console.log('Changing language to:', language)
+    console.log('Current language:', i18n.language)
+    
+    i18n.changeLanguage(language).then(() => {
+      console.log('Language changed successfully to:', language)
+      sessionStorage.setItem("selectedLanguage", language)
+      localStorage.setItem("selectedLanguage", language)
+    }).catch((error) => {
+      console.error('Error changing language:', error)
+    })
+  }
 
   const menuItems = [
-    { label: "Inicio", href: "#inicio" },
-    { label: "La empresa", href: "#empresa" },
-    { label: "Abra su cuenta", href: "#cuenta" },
-    { label: "Contacto", href: "#contacto" },
-    { label: "Opciones de inversión", href: "#opciones" },
-    { label: "Operar criptomonedas", href: "#cripto" },
+    { label: t('menu.home'), ariaLabel: "Ir a inicio", link: "/" },
+    { label: t('menu.company'), ariaLabel: "Conocer la empresa", link: "/laempresa" },
+    { label: t('menu.openAccount'), ariaLabel: "Abrir cuenta", link: "/abrircuenta" },
+    { label: t('menu.contact'), ariaLabel: "Contactarse", link: "/contacto" },
+    { label: t('menu.investments'), ariaLabel: "Ver opciones de inversión", link: "/inversiones" },
+    // { label: t('menu.crypto'), ariaLabel: "Operar criptomonedas", link: "#cripto" },
+  ]
+
+  const languageItems = [
+    { code: "es", label: "Español", flag: "🇪🇸" },
+    { code: "it", label: "Italiano", flag: "🇮🇹" },
+    { code: "de", label: "Deutsch", flag: "🇩🇪" },
+    { code: "fr", label: "Français", flag: "🇫🇷" },
+    { code: "sv", label: "Svenska", flag: "🇸🇪" },
+  ]
+
+  const socialItems = [
+    { label: "LinkedIn", link: "https://linkedin.com" },
+    { label: "Twitter", link: "https://twitter.com" },
+    { label: "Instagram", link: "https://instagram.com" },
   ]
 
   return (
-    <nav
-      className="fixed top-0 w-full z-50 bg-white border-b border-[var(--saas-border)]"
-      style={{ borderColor: "var(--saas-border)" }}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
-            <div className="text-2xl font-bold" style={{ color: "var(--saas-primary)" }}>
-              Boston
-            </div>
-            <div className="text-xs" style={{ color: "var(--saas-muted)" }}>
-              Asset Manager
-            </div>
-          </Link>
-
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-1">
-            {menuItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="px-3 py-2 text-sm font-medium transition-colors hover:bg-[var(--saas-light)] rounded-md"
-                style={{ color: "var(--saas-text)" }}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-
-          {/* CTA Button */}
-          <div className="hidden md:flex">
-            <button
-              className="text-white font-bold py-2 px-6 rounded-lg transition-all hover:-translate-y-0.5"
-              style={{
-                background: "linear-gradient(135deg, var(--saas-primary), var(--saas-accent))",
-                boxShadow: "0 4px 15px rgba(29, 57, 105, 0.3)",
-              }}
-            >
-              Comenzar
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md"
-              style={{ color: "var(--saas-text)" }}
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {isOpen && (
-          <div className="md:hidden pb-4">
-            {menuItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="block px-3 py-2 text-base font-medium rounded-md transition-colors"
-                style={{ color: "var(--saas-text)" }}
-                onClick={() => setIsOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <button
-              className="w-full text-white font-bold py-2 px-6 rounded-lg mt-4 transition-all hover:-translate-y-0.5"
-              style={{
-                background: "linear-gradient(135deg, var(--saas-primary), var(--saas-accent))",
-                boxShadow: "0 4px 15px rgba(29, 57, 105, 0.3)",
-              }}
-            >
-              Comenzar
-            </button>
-          </div>
-        )}
-      </div>
-    </nav>
+    <StaggeredMenu
+      position="right"
+      items={menuItems}
+      socialItems={socialItems}
+      languageItems={languageItems}
+      currentLanguage={currentLang}
+      onLanguageChange={handleLanguageChange}
+      languageLabel={t('menu.language')}
+      displaySocials={true}
+      displayItemNumbering={false}
+      menuButtonColor={menuColor}
+      openMenuButtonColor="#1d3969"
+      changeMenuColorOnOpen={true}
+      colors={["#1d3969", "#2563eb"]}
+      logoUrl="https://bostonam.ar/wp-content/uploads/2023/03/LOGOWEBSITE-e1680142400144.png"
+      accentColor="#2563eb"
+      isFixed={true}
+      onMenuOpen={() => console.log("Menu opened")}
+      onMenuClose={() => console.log("Menu closed")}
+    />
   )
 }

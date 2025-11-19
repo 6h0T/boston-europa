@@ -1,4 +1,17 @@
+"use client"
+
+import { useRef } from "react"
+import { LightRays } from "@/components/ui/light-rays"
+import { useScrollSnap } from "@/hooks/use-scroll-snap"
+import { useTranslation } from "react-i18next"
+import { AnimatedBeamDemo } from "@/components/ui/animated-beam-demo"
+
 export default function BenefitsSection() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const { t } = useTranslation()
+
+  // Aplicar scroll snap
+  useScrollSnap(sectionRef)
   const benefits = [
     {
       title: "Proteger tus ahorros de la inflación",
@@ -19,33 +32,35 @@ export default function BenefitsSection() {
   ]
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center" style={{ color: "var(--saas-primary)" }}>
-          ¿Para qué invertir?
+    <section 
+      ref={sectionRef} 
+      className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-screen flex items-center"
+      style={{
+        backgroundImage: "url('/bg-3.svg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <LightRays />
+      {/* Capa de gradiente para atenuar el SVG */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "linear-gradient(to bottom, rgba(29, 57, 105, 0.95), rgba(29, 57, 105, 0.98))",
+          zIndex: 1
+        }}
+      />
+      <div className="max-w-7xl mx-auto relative z-10">
+        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center" style={{ color: "white" }}>
+          {t('benefits.title')}
         </h2>
-        <p className="text-center mb-16 text-lg" style={{ color: "var(--saas-muted)" }}>
-          Descubre cómo nuestras inversiones pueden cambiar tu futuro financiero
+        <p className="text-center mb-16 text-lg" style={{ color: "rgba(255, 255, 255, 0.9)" }}>
+          {t('benefits.subtitle')}
         </p>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {benefits.map((benefit, index) => (
-            <div
-              key={index}
-              className="flex items-start gap-4 p-6 rounded-lg transition-all hover:shadow-lg"
-              style={{
-                background: "var(--saas-light)",
-                borderLeft: "4px solid var(--saas-accent)",
-              }}
-            >
-              <span className="text-4xl flex-shrink-0">{benefit.icon}</span>
-              <div>
-                <p className="text-lg font-semibold" style={{ color: "var(--saas-text)" }}>
-                  {benefit.title}
-                </p>
-              </div>
-            </div>
-          ))}
+        <div className="w-full">
+          <AnimatedBeamDemo />
         </div>
       </div>
     </section>

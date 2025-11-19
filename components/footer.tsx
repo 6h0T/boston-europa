@@ -1,15 +1,15 @@
 export default function Footer() {
   return (
-    <footer className="py-16 px-4 sm:px-6 lg:px-8" style={{ background: "var(--saas-primary)", color: "white" }}>
+    <footer className="py-16 px-4 sm:px-6 lg:px-8" style={{ background: "white", color: "var(--saas-text)" }}>
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           <div>
             <h3 className="text-xl font-bold mb-4">Boston Asset Manager</h3>
-            <p className="text-sm opacity-90">Institución de asesoramiento financiero autorizada por FINRA y SEC.</p>
+            <p className="text-sm" style={{ color: "var(--saas-muted)" }}>Institución de asesoramiento financiero autorizada por FINRA y SEC.</p>
           </div>
           <div>
             <h4 className="font-bold mb-4">Empresa</h4>
-            <ul className="space-y-2 text-sm opacity-90">
+            <ul className="space-y-2 text-sm" style={{ color: "var(--saas-muted)" }}>
               <li>
                 <a href="#empresa" className="hover:opacity-100 transition">
                   La empresa
@@ -29,7 +29,7 @@ export default function Footer() {
           </div>
           <div>
             <h4 className="font-bold mb-4">Enlaces útiles</h4>
-            <ul className="space-y-2 text-sm opacity-90">
+            <ul className="space-y-2 text-sm" style={{ color: "var(--saas-muted)" }}>
               <li>
                 <a href="#" className="hover:opacity-100 transition">
                   Bolsa de Madrid
@@ -49,7 +49,7 @@ export default function Footer() {
           </div>
           <div>
             <h4 className="font-bold mb-4">Redes sociales</h4>
-            <ul className="space-y-2 text-sm opacity-90">
+            <ul className="space-y-2 text-sm" style={{ color: "var(--saas-muted)" }}>
               <li>
                 <a href="#" className="hover:opacity-100 transition">
                   LinkedIn
@@ -69,7 +69,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white border-opacity-20 pt-8 text-center text-sm opacity-75">
+        <div className="border-t pt-8 text-center text-sm" style={{ borderColor: "var(--saas-border)", color: "var(--saas-muted)" }}>
           <p className="mb-2">
             Sociedad de asesoramiento financiero autorizada por FINRA en los Estados Unidos bajo el número 310985.
           </p>

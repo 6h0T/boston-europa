@@ -2,6 +2,9 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import PageLoader from "@/components/ui/page-loader"
+import PageTransition from "@/components/ui/page-transition"
+import { I18nProvider } from "@/components/providers/i18n-provider"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -22,8 +25,13 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`font-sans antialiased`}>
-        {children}
-        <Analytics />
+        <I18nProvider>
+          <PageLoader />
+          <PageTransition>
+            {children}
+          </PageTransition>
+          <Analytics />
+        </I18nProvider>
       </body>
     </html>
   )

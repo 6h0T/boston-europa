@@ -1,65 +1,141 @@
 "use client"
 
-import { WobbleCard } from "@/components/ui/wobble-card"
+import { useEffect, useRef } from "react"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useScrollSnap } from "@/hooks/use-scroll-snap"
+import { useTranslation } from "react-i18next"
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function StepsSection() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const { t } = useTranslation()
+
+  // Aplicar scroll snap
+  useScrollSnap(sectionRef)
+
+  useEffect(() => {
+    if (!sectionRef.current) return
+
+    const section = sectionRef.current
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        section,
+        {
+          scale: 0.85,
+        },
+        {
+          scale: 1,
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "top top",
+            scrub: 1,
+          },
+        }
+      )
+    })
+
+    return () => ctx.revert()
+  }, [])
+
   const steps = [
     {
       number: "1",
-      title: "Definimos tu perfil de inversión",
-      description: "Respondé un cuestionario simple para entender tus objetivos y tolerancia al riesgo.",
-      icon: "📋",
+      title: t('steps.1.title'),
+      description: t('steps.1.description'),
+      placeholder: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&h=500&fit=crop",
     },
     {
       number: "2",
-      title: "Elegimos el mejor broker para vos",
-      description: "Accedemos a nuestras alianzas con los brokers más prestigiosos del país.",
-      icon: "🏢",
+      title: t('steps.2.title'),
+      description: t('steps.2.description'),
+      placeholder: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=500&fit=crop",
     },
     {
       number: "3",
-      title: "Armamos tu cartera de inversión",
-      description: "Nuestros expertos diseñan una cartera personalizada para maximizar tus retornos.",
-      icon: "📊",
+      title: t('steps.3.title'),
+      description: t('steps.3.description'),
+      placeholder: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=500&fit=crop",
     },
   ]
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8" style={{ background: "var(--saas-light)" }}>
-      <div className="max-w-7xl mx-auto">
+    <section
+      ref={sectionRef}
+      className="sticky top-0 z-10 bg-white -mt-[3rem] rounded-t-[3rem] min-h-screen flex items-center justify-center overflow-hidden py-20"
+      style={{ 
+        background: "var(--saas-light)", 
+        backgroundImage: "url('/bg-1.svg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        transformOrigin: "center center",
+      }}
+    >
+      {/* Capa de gradiente para atenuar el SVG */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.9))",
+          zIndex: 1
+        }}
+      />
+      
+      <div className="w-full max-w-6xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
         <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center" style={{ color: "var(--saas-primary)" }}>
-          Proceso Simple
+          {t('steps.title')}
         </h2>
-        <p className="text-center mb-16 text-lg" style={{ color: "var(--saas-muted)" }}>
-          Tres pasos sencillos para comenzar tu viaje financiero
+        <p className="text-center mb-12 text-lg max-w-2xl mx-auto" style={{ color: "var(--saas-muted)" }}>
+          {t('steps.subtitle')}
         </p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 max-w-7xl mx-auto w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {steps.map((step, index) => (
-            <WobbleCard
+            <div
               key={index}
-              containerClassName={`col-span-1 ${
-                index === 0 ? "lg:col-span-2 min-h-[300px]" : "min-h-[300px]"
-              } bg-gradient-to-br from-indigo-600 to-indigo-800`}
-              className="flex flex-col justify-start"
+              className="group relative overflow-hidden rounded-3xl aspect-[3/4] transition-all hover:shadow-2xl hover:-translate-y-2"
+              style={{
+                background: `linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))`,
+              }}
             >
-              <div className="max-w-xs">
-                <div
-                  className="inline-flex items-center justify-center w-12 h-12 rounded-lg font-bold text-xl mb-4"
+              {/* Placeholder de imagen */}
+              <div 
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                style={{
+                  backgroundImage: `url('${step.placeholder}')`,
+                }}
+              />
+              
+              {/* Overlay con gradiente */}
+              <div 
+                className="absolute inset-0"
+                style={{
+                  background: "linear-gradient(to top, rgba(29, 57, 105, 0.9) 0%, rgba(29, 57, 105, 0.3) 50%, transparent 100%)",
+                }}
+              />
+              
+              {/* Contenido */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <div 
+                  className="text-sm font-bold mb-2 inline-block px-3 py-1 rounded-full"
                   style={{
-                    background: "linear-gradient(135deg, var(--saas-primary), var(--saas-accent))",
-                    color: "white",
+                    background: "rgba(255, 255, 255, 0.2)",
+                    backdropFilter: "blur(10px)",
                   }}
                 >
-                  {step.number}
+                  {t('steps.step')} {step.number}
                 </div>
-                <div className="text-5xl mb-4">{step.icon}</div>
-                <h3 className="text-2xl font-bold mb-3 text-white" style={{ color: "white" }}>
+                <h3 className="text-2xl font-bold mb-2">
                   {step.title}
                 </h3>
-                <p className="text-base text-neutral-200">{step.description}</p>
+                <p className="text-sm opacity-90">
+                  {step.description}
+                </p>
               </div>
-            </WobbleCard>
+            </div>
           ))}
         </div>
       </div>
