@@ -229,8 +229,13 @@
 }
 
 /* Unicorn Studio Badge Removal */
-a[href*="unicorn.studio"] {
+a[href*="unicorn.studio"],
+[data-us-project] a,
+.us-badge {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 /* Unicorn Studio Full Screen Fix */

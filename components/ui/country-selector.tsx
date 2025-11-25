@@ -84,6 +84,38 @@ export default function CountrySelector({ onSelect }: { onSelect: (language: str
     }
   }, [])
 
+  // Force remove badge via JS interval
+  useEffect(() => {
+    const removeBadge = () => {
+      const links = document.querySelectorAll('a');
+      links.forEach(link => {
+        if (
+          link.href.includes('unicorn.studio') || 
+          link.textContent?.toLowerCase().includes('made with unicorn.studio')
+        ) {
+          link.style.display = 'none';
+          link.style.setProperty('display', 'none', 'important');
+          link.style.visibility = 'hidden';
+          link.style.opacity = '0';
+          link.style.pointerEvents = 'none';
+        }
+      });
+    };
+
+    // Run frequently at start then slower
+    removeBadge();
+    const fastInterval = setInterval(removeBadge, 100);
+    const slowTimeout = setTimeout(() => {
+      clearInterval(fastInterval);
+      setInterval(removeBadge, 1000);
+    }, 5000);
+
+    return () => {
+      clearInterval(fastInterval);
+      clearTimeout(slowTimeout);
+    }
+  }, [])
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -98,7 +130,12 @@ export default function CountrySelector({ onSelect }: { onSelect: (language: str
       >
         {/* Unicorn Studio Background */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-           <div data-us-project="7KWfZDdazgHxIcuwvQlG"></div>
+           <div 
+             data-us-project="7KWfZDdazgHxIcuwvQlG"
+             style={{
+               transform: 'scale(1.2) translateY(5%)',
+             }}
+           ></div>
         </div>
         
         <div className="text-center max-w-5xl px-4 relative z-10">
