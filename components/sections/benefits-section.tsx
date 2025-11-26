@@ -34,7 +34,7 @@ export default function BenefitsSection() {
   return (
     <section 
       ref={sectionRef} 
-      className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-screen flex items-center"
+      className="relative py-16 md:py-20 px-4 sm:px-6 lg:px-8 overflow-hidden md:min-h-screen flex items-center"
       style={{
         backgroundImage: "url('/bg-3.svg')",
         backgroundSize: "cover",

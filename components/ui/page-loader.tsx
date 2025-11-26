@@ -2,16 +2,42 @@
 
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { useTranslation } from "react-i18next"
 import CountrySelector from "./country-selector"
+
+// Helper para leer cookies
+function getCookie(name: string): string | null {
+  if (typeof document === 'undefined') return null
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop()?.split(';').shift() || null
+  return null
+}
 
 export default function PageLoader() {
   const [isLoading, setIsLoading] = useState(true)
   const [showCountrySelector, setShowCountrySelector] = useState(false)
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null)
   const [isReady, setIsReady] = useState(false)
+  const { i18n } = useTranslation()
 
   useEffect(() => {
-    // Verificar si ya se seleccionó un idioma en esta sesión
+    // 1. Verificar si hay idioma definido por dominio (cookie del middleware)
+    const domainLanguage = getCookie('domain-language')
+    const skipSelector = getCookie('skip-country-selector')
+    
+    // Si el dominio define un idioma específico (no selector), usarlo directamente
+    if (domainLanguage && domainLanguage !== 'selector' && skipSelector === 'true') {
+      i18n.changeLanguage(domainLanguage)
+      sessionStorage.setItem("selectedLanguage", domainLanguage)
+      localStorage.setItem("selectedLanguage", domainLanguage)
+      setSelectedLanguage(domainLanguage)
+      setIsReady(true)
+      setIsLoading(false)
+      return
+    }
+    
+    // 2. Verificar si ya se seleccionó un idioma en esta sesión
     const sessionLanguage = sessionStorage.getItem("selectedLanguage")
     
     if (sessionLanguage) {
@@ -28,7 +54,7 @@ export default function PageLoader() {
 
       return () => clearTimeout(timer)
     }
-  }, [])
+  }, [i18n])
 
   useEffect(() => {
     const handleOpenSelector = () => {

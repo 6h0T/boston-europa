@@ -1,6 +1,6 @@
 "use client"
 
-import React, { forwardRef, useRef } from "react"
+import React, { forwardRef, useRef, useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { AnimatedBeam } from "@/components/ui/animated-beam"
 import { useTranslation } from "react-i18next"
@@ -31,6 +31,107 @@ const Circle = forwardRef<
 
 Circle.displayName = "Circle"
 
+// Componente móvil con layout vertical y beams animados
+function MobileBenefits() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const logoRef = useRef<HTMLDivElement>(null)
+  const benefit1Ref = useRef<HTMLDivElement>(null)
+  const benefit2Ref = useRef<HTMLDivElement>(null)
+  const benefit3Ref = useRef<HTMLDivElement>(null)
+  const benefit4Ref = useRef<HTMLDivElement>(null)
+  const { t } = useTranslation()
+
+  const benefitRefs = [benefit1Ref, benefit2Ref, benefit3Ref, benefit4Ref]
+  
+  const benefits = [
+    { icon: Icons.shield, label: t('benefits.benefit1') },
+    { icon: Icons.chart, label: t('benefits.benefit2') },
+    { icon: Icons.dollar, label: t('benefits.benefit3') },
+    { icon: Icons.trending, label: t('benefits.benefit4') },
+  ]
+
+  return (
+    <div 
+      ref={containerRef}
+      className="relative flex flex-col items-center gap-8 py-8 w-full"
+    >
+      {/* Logo central */}
+      <div className="relative mb-4">
+        <div 
+          className="absolute inset-0 rounded-full blur-2xl opacity-40"
+          style={{
+            background: "radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%)",
+            width: "140%",
+            height: "140%",
+            left: "-20%",
+            top: "-20%"
+          }}
+        />
+        <div ref={logoRef}>
+          <img 
+            src="/Logo boston.png" 
+            alt="Boston Asset Manager" 
+            className="w-32 h-32 object-contain relative z-10"
+          />
+        </div>
+      </div>
+      
+      {/* Grid de beneficios 2x2 */}
+      <div className="grid grid-cols-2 gap-x-8 gap-y-10 w-full max-w-sm px-4">
+        {benefits.map((benefit, index) => (
+          <div key={index} className="flex flex-col items-center gap-3">
+            <div 
+              ref={benefitRefs[index]}
+              className="z-10 flex size-20 items-center justify-center rounded-full border-2 bg-white p-4 shadow-lg"
+            >
+              <benefit.icon />
+            </div>
+            <span className="text-sm text-white text-center font-medium leading-tight px-2">
+              {benefit.label}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Animated Beams conectando al logo */}
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={benefit1Ref}
+        toRef={logoRef}
+        gradientStartColor="#FFD700"
+        gradientStopColor="#FFFFFF"
+        curvature={50}
+      />
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={benefit2Ref}
+        toRef={logoRef}
+        gradientStartColor="#FFD700"
+        gradientStopColor="#FFFFFF"
+        curvature={-50}
+        reverse
+      />
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={benefit3Ref}
+        toRef={logoRef}
+        gradientStartColor="#FFD700"
+        gradientStopColor="#FFFFFF"
+        curvature={50}
+      />
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={benefit4Ref}
+        toRef={logoRef}
+        gradientStartColor="#FFD700"
+        gradientStopColor="#FFFFFF"
+        curvature={-50}
+        reverse
+      />
+    </div>
+  )
+}
+
 export function AnimatedBeamDemo() {
   const containerRef = useRef<HTMLDivElement>(null)
   const div1Ref = useRef<HTMLDivElement>(null)
@@ -39,6 +140,19 @@ export function AnimatedBeamDemo() {
   const div4Ref = useRef<HTMLDivElement>(null)
   const div5Ref = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Mostrar versión móvil en pantallas pequeñas
+  if (isMobile) {
+    return <MobileBenefits />
+  }
 
   return (
     <div

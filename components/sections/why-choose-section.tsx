@@ -258,9 +258,6 @@ export default function WhyChooseSection() {
               
               {/* Contenido */}
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                <div className="mb-4">
-                  {renderIcon(feature.iconType)}
-                </div>
                 <h3 className="text-xl font-bold mb-2 text-white">
                   {feature.title}
                 </h3>

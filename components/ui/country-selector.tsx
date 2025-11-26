@@ -7,17 +7,17 @@ import { WordRotate } from "./word-rotate"
 
 interface Country {
   code: string
-  name: string
+  names: string[] // Nombres en cada idioma [ES, IT, DE, FR, SV]
   flag: string
   language: string
 }
 
 const countries: Country[] = [
-  { code: "IT", name: "Italia", flag: "https://flagcdn.com/it.svg", language: "it" },
-  { code: "ES", name: "España", flag: "https://flagcdn.com/es.svg", language: "es" },
-  { code: "DE", name: "Alemania", flag: "https://flagcdn.com/de.svg", language: "de" },
-  { code: "FR", name: "Francia", flag: "https://flagcdn.com/fr.svg", language: "fr" },
-  { code: "SE", name: "Suecia", flag: "https://flagcdn.com/se.svg", language: "sv" },
+  { code: "IT", names: ["Italia", "Italia", "Italien", "Italie", "Italien"], flag: "https://flagcdn.com/it.svg", language: "it" },
+  { code: "ES", names: ["España", "Spagna", "Spanien", "Espagne", "Spanien"], flag: "https://flagcdn.com/es.svg", language: "es" },
+  { code: "DE", names: ["Alemania", "Germania", "Deutschland", "Allemagne", "Tyskland"], flag: "https://flagcdn.com/de.svg", language: "de" },
+  { code: "FR", names: ["Francia", "Francia", "Frankreich", "France", "Frankrike"], flag: "https://flagcdn.com/fr.svg", language: "fr" },
+  { code: "SE", names: ["Suecia", "Svezia", "Schweden", "Suède", "Sverige"], flag: "https://flagcdn.com/se.svg", language: "sv" },
 ]
 
 const translations = {
@@ -39,7 +39,16 @@ const translations = {
 
 export default function CountrySelector({ onSelect }: { onSelect: (language: string) => void }) {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
+  const [currentLangIndex, setCurrentLangIndex] = useState(0)
   const { i18n } = useTranslation()
+
+  // Sincronizar el índice de idioma con la rotación del título
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentLangIndex((prev) => (prev + 1) % 5)
+    }, 3000) // Mismo duration que WordRotate
+    return () => clearInterval(interval)
+  }, [])
 
   const handleSelect = (country: Country) => {
     setSelectedCountry(country.code)
@@ -173,15 +182,14 @@ export default function CountrySelector({ onSelect }: { onSelect: (language: str
               <motion.button
                 key={country.code}
                 onClick={() => handleSelect(country)}
-                className="group relative overflow-hidden rounded-2xl p-8 transition-all duration-200"
+                className="group relative overflow-hidden rounded-2xl p-8 transition-all duration-300 hover:shadow-[0_0_40px_rgba(29,57,105,0.6)]"
                 style={{
                   background: selectedCountry === country.code 
-                    ? "rgba(255, 255, 255, 0.3)" 
-                    : "rgba(255, 255, 255, 0.1)",
-                  backdropFilter: "blur(10px)",
+                    ? "rgba(255, 255, 255, 1)" 
+                    : "rgba(255, 255, 255, 0.95)",
                   border: selectedCountry === country.code
-                    ? "2px solid rgba(255, 255, 255, 0.8)"
-                    : "2px solid rgba(255, 255, 255, 0.2)",
+                    ? "2px solid #1d3969"
+                    : "2px solid transparent",
                 }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -192,15 +200,26 @@ export default function CountrySelector({ onSelect }: { onSelect: (language: str
                 <div className="mb-4 flex items-center justify-center">
                   <img 
                     src={country.flag} 
-                    alt={`Bandera de ${country.name}`}
+                    alt={`Bandera de ${country.names[0]}`}
                     className="w-20 h-20 object-cover rounded-lg shadow-lg"
                   />
                 </div>
-                <div className="text-white font-bold text-lg">{country.name}</div>
+                <AnimatePresence mode="wait">
+                  <motion.div 
+                    key={currentLangIndex}
+                    className="text-[#1d3969] font-bold text-lg"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {country.names[currentLangIndex]}
+                  </motion.div>
+                </AnimatePresence>
                 
                 {selectedCountry === country.code && (
                   <motion.div
-                    className="absolute inset-0 bg-white/20"
+                    className="absolute inset-0 bg-[#1d3969]/10"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.3 }}

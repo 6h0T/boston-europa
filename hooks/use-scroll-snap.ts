@@ -11,6 +11,10 @@ export function useScrollSnap(sectionRef: RefObject<HTMLElement | null>) {
   useEffect(() => {
     if (!sectionRef.current) return
 
+    // Desactivar scroll snap en dispositivos móviles
+    const isMobile = window.innerWidth < 768
+    if (isMobile) return
+
     const section = sectionRef.current
     let isScrolling = false
     let scrollAccumulator = 0
