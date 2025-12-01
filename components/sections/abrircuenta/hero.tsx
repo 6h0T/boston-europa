@@ -6,14 +6,18 @@ export default function AbrirCuentaHero() {
   const { t } = useTranslation()
   return (
     <section className="relative min-h-[400px] py-20 overflow-hidden w-full bg-gradient-to-br from-[#1d3969] to-[#2563eb]">
-      {/* Animated background pattern */}
-      <div 
-        className="absolute top-[-50%] right-[-50%] w-[200%] h-[200%] opacity-10 pointer-events-none animate-[float_25s_infinite_linear]"
-        style={{
-          backgroundImage: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1.5" fill="rgba(255,255,255,0.08)"/></svg>')`,
-          backgroundRepeat: 'repeat'
-        }}
+      {/* Video background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        crossOrigin="anonymous"
+        className="absolute inset-0 w-full h-full object-cover z-0"
+        src="https://sjjamnou5h3qi4bf.public.blob.vercel-storage.com/10081.mp4"
       />
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/40 z-[1]" />
 
       <div className="max-w-7xl mx-auto px-8 relative z-10">
         <div className="text-center animate-[fadeInDown_0.8s_ease-out]">
@@ -30,10 +34,6 @@ export default function AbrirCuentaHero() {
       </div>
 
       <style jsx>{`
-        @keyframes float {
-          0% { transform: translate(0, 0); }
-          100% { transform: translate(-50px, -50px); }
-        }
         @keyframes fadeInDown {
           from { opacity: 0; transform: translateY(-30px); }
           to { opacity: 1; transform: translateY(0); }
