@@ -74,7 +74,7 @@ export default function HeroSection() {
           className="w-full h-full object-cover"
           style={{ opacity: 0.6 }}
         >
-          <source src="http://bostonam.ar/wp-content/uploads/2025/12/10081.mp4" type="video/mp4" />
+          <source src="https://sjjamnou5h3qi4bf.public.blob.vercel-storage.com/10081.mp4" type="video/mp4" />
         </video>
         <div 
           className="absolute inset-0 w-full h-full pointer-events-none"
