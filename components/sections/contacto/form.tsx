@@ -19,25 +19,39 @@ export default function ContactoForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setSubmitStatus("idle")
     
-    // Simular envío
-    setTimeout(() => {
-      console.log("Formulario de contacto enviado:", formData)
-      setSubmitStatus("success")
-      setIsSubmitting(false)
-      
-      // Reset form
-      setFormData({
-        nombre: "",
-        email: "",
-        telefono: "",
-        asunto: "",
-        mensaje: ""
+    try {
+      const response = await fetch('/api/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'contact',
+          ...formData
+        })
       })
-      
-      // Reset status después de 3 segundos
-      setTimeout(() => setSubmitStatus("idle"), 3000)
-    }, 1500)
+
+      if (response.ok) {
+        setSubmitStatus("success")
+        setFormData({
+          nombre: "",
+          email: "",
+          telefono: "",
+          asunto: "",
+          mensaje: ""
+        })
+        setTimeout(() => setSubmitStatus("idle"), 5000)
+      } else {
+        setSubmitStatus("error")
+        setTimeout(() => setSubmitStatus("idle"), 5000)
+      }
+    } catch (error) {
+      console.error("Error enviando formulario:", error)
+      setSubmitStatus("error")
+      setTimeout(() => setSubmitStatus("idle"), 5000)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -156,6 +170,15 @@ export default function ContactoForm() {
                   <polyline points="20 6 9 17 4 12"/>
                 </svg>
                 <span className="font-semibold">{t('contact.form.success')}</span>
+              </div>
+            )}
+
+            {submitStatus === "error" && (
+              <div className="bg-red-500/10 border border-red-500/20 text-red-500 px-6 py-4 rounded-xl flex items-center gap-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+                </svg>
+                <span className="font-semibold">{t('contact.form.error')}</span>
               </div>
             )}
 

@@ -169,6 +169,7 @@ const resources = {
       "contact.form.sending": "Enviando...",
       "contact.form.submit": "Enviar Mensaje",
       "contact.form.success": "¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.",
+      "contact.form.error": "Error al enviar el mensaje. Por favor, intente nuevamente.",
       
       // Inversiones - Hero
       "investments.hero.title": "Opciones de Inversión",
@@ -442,6 +443,7 @@ const resources = {
       "contact.form.sending": "Invio in corso...",
       "contact.form.submit": "Invia Messaggio",
       "contact.form.success": "Messaggio inviato con successo! Ti contatteremo presto.",
+      "contact.form.error": "Errore nell'invio del messaggio. Per favore, riprova.",
       
       // Inversiones - Hero
       "investments.hero.title": "Opzioni di Investimento",
@@ -715,6 +717,7 @@ const resources = {
       "contact.form.sending": "Wird gesendet...",
       "contact.form.submit": "Nachricht senden",
       "contact.form.success": "Nachricht erfolgreich gesendet! Wir werden uns bald bei Ihnen melden.",
+      "contact.form.error": "Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut.",
       
       // Inversiones - Hero
       "investments.hero.title": "Anlageoptionen",
@@ -988,6 +991,7 @@ const resources = {
       "contact.form.sending": "Envoi en cours...",
       "contact.form.submit": "Envoyer le Message",
       "contact.form.success": "Message envoyé avec succès! Nous vous contacterons bientôt.",
+      "contact.form.error": "Erreur lors de l'envoi du message. Veuillez réessayer.",
       
       // Inversiones - Hero
       "investments.hero.title": "Options d'Investissement",
@@ -1262,6 +1266,7 @@ const resources = {
       "contact.form.sending": "Skickar...",
       "contact.form.submit": "Skicka Meddelande",
       "contact.form.success": "Meddelande skickat! Vi kontaktar dig snart.",
+      "contact.form.error": "Fel vid sändning av meddelandet. Vänligen försök igen.",
       
       // Inversiones - Hero
       "investments.hero.title": "Investeringsalternativ",
