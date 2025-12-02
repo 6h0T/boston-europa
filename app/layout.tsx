@@ -11,6 +11,7 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://bostonam.eu"),
   title: "Boston Asset Manager | Empezá a invertir en solo 3 pasos",
   description: "Con Boston Asset Manager, invertir es más fácil que nunca. Accede a mercados de capitales con asesoramiento experto. Institución autorizada por FINRA y SEC.",
   keywords: [
@@ -49,7 +50,7 @@ export const metadata: Metadata = {
     description: "Con Boston Asset Manager, invertir es más fácil que nunca. Accede a mercados de capitales con asesoramiento experto.",
     images: [
       {
-        url: "https://bostonam.eu/BANNER-METADATA.jpg",
+        url: "/BANNER-METADATA.jpg",
         width: 1200,
         height: 630,
         alt: "Boston Asset Manager - Inversiones en Europa",
@@ -62,7 +63,7 @@ export const metadata: Metadata = {
     description: "Con Boston Asset Manager, invertir es más fácil que nunca. Accede a mercados de capitales con asesoramiento experto.",
     images: [
       {
-        url: "https://bostonam.eu/BANNER-METADATA-600x315.jpg",
+        url: "/BANNER-METADATA-600x315.jpg",
         width: 600,
         height: 315,
         alt: "Boston Asset Manager - Inversiones en Europa",
