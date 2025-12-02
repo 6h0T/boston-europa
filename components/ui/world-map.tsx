@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useMemo, memo } from "react";
 import { motion, useInView } from "motion/react";
 import DottedMap from "dotted-map";
 
@@ -14,23 +14,37 @@ interface MapProps {
   lineColor?: string;
 }
 
-export function WorldMap({
+// Cache del mapa para evitar recálculos
+const mapCache = new Map<string, string>();
+
+function WorldMapComponent({
   dots = [],
   lineColor = "#0ea5e9",
 }: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
-  const map = new DottedMap({ height: 100, grid: "diagonal" });
-
+  
   const { theme } = useTheme();
-
-  const svgMap = map.getSVG({
-    radius: 0.22,
-    color: theme === "dark" ? "#FFFFFF40" : "#FFFFFF20",
-    shape: "circle",
-    backgroundColor: "transparent",
-  });
+  
+  // Memoizar la generación del mapa SVG
+  const svgMap = useMemo(() => {
+    const cacheKey = `map-${theme}`;
+    if (mapCache.has(cacheKey)) {
+      return mapCache.get(cacheKey)!;
+    }
+    
+    const map = new DottedMap({ height: 100, grid: "diagonal" });
+    const svg = map.getSVG({
+      radius: 0.22,
+      color: theme === "dark" ? "#FFFFFF40" : "#FFFFFF20",
+      shape: "circle",
+      backgroundColor: "transparent",
+    });
+    
+    mapCache.set(cacheKey, svg);
+    return svg;
+  }, [theme]);
 
   const projectPoint = (lat: number, lng: number) => {
     const x = (lng + 180) * (800 / 360);
@@ -185,3 +199,6 @@ export function WorldMap({
     </div>
   );
 }
+
+// Exportar con memo para evitar re-renders innecesarios
+export const WorldMap = memo(WorldMapComponent);

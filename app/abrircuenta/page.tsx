@@ -1,9 +1,18 @@
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
 import AbrirCuentaHero from "@/components/sections/abrircuenta/hero"
-import InversionUE from "@/components/sections/abrircuenta/inversion-ue"
-import InversionExterior from "@/components/sections/abrircuenta/inversion-exterior"
+
+// Dynamic imports para lazy loading
+const InversionUE = dynamic(() => import("@/components/sections/abrircuenta/inversion-ue"), {
+  loading: () => <div className="min-h-[600px]" />,
+})
+const InversionExterior = dynamic(() => import("@/components/sections/abrircuenta/inversion-exterior"), {
+  loading: () => <div className="min-h-[600px]" />,
+})
+const Footer = dynamic(() => import("@/components/footer"), {
+  loading: () => <div className="min-h-[200px]" />,
+})
 
 export const metadata: Metadata = {
   title: "Abra su Cuenta | Boston Asset Manager",

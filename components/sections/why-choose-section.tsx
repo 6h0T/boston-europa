@@ -1,9 +1,19 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useCallback } from "react"
 import { useTranslation } from "react-i18next"
 import { LightRays } from "@/components/ui/light-rays"
 import { useScrollSnap } from "@/hooks/use-scroll-snap"
+
+// Videos locales optimizados
+const VIDEO_SOURCES = [
+  "/expertos.mp4",      // Bento 0: "Equipo de Expertos"
+  "/mercados.mp4",      // Bento 1: "Experiencia en Mercados"
+  "/asesoramiento.mp4", // Bento 2: "Asesoramiento Integral"
+  "/alianzas.mp4",      // Bento 3: "Alianzas Estratégicas"
+  "/regulacion.mp4",    // Bento 4: "Regulación FINRA y SEC"
+  "/rendimiento.mp4",   // Bento 5: "Alto Rendimiento"
+]
 
 export default function WhyChooseSection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -13,20 +23,20 @@ export default function WhyChooseSection() {
   // Aplicar scroll snap
   useScrollSnap(sectionRef)
 
-  const handleMouseEnter = (index: number) => {
+  const handleMouseEnter = useCallback((index: number) => {
     const video = videoRefs.current[index]
     if (video) {
-      video.play()
+      video.play().catch(() => {})
     }
-  }
+  }, [])
 
-  const handleMouseLeave = (index: number) => {
+  const handleMouseLeave = useCallback((index: number) => {
     const video = videoRefs.current[index]
     if (video) {
       video.pause()
       video.currentTime = 0
     }
-  }
+  }, [])
   const features = [
     {
       title: t('whyChoose.feature1.title'),
@@ -181,72 +191,16 @@ export default function WhyChooseSection() {
               onMouseLeave={() => handleMouseLeave(index)}
             >
               {/* Video de fondo para cada bento */}
-              {index === 0 && (
-                <video
-                  ref={(el) => { videoRefs.current[index] = el }}
-                  loop
-                  muted
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
-                >
-                  <source src="https://www.pexels.com/download/video/5520073/" type="video/mp4" />
-                </video>
-              )}
-              {index === 1 && (
-                <video
-                  ref={(el) => { videoRefs.current[index] = el }}
-                  loop
-                  muted
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
-                >
-                  <source src="https://videos.pexels.com/video-files/7580448/7580448-uhd_2732_1440_25fps.mp4" type="video/mp4" />
-                </video>
-              )}
-              {index === 2 && (
-                <video
-                  ref={(el) => { videoRefs.current[index] = el }}
-                  loop
-                  muted
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
-                >
-                  <source src="https://videos.pexels.com/video-files/3249454/3249454-uhd_2560_1440_25fps.mp4" type="video/mp4" />
-                </video>
-              )}
-              {index === 3 && (
-                <video
-                  ref={(el) => { videoRefs.current[index] = el }}
-                  loop
-                  muted
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
-                >
-                  <source src="https://videos.pexels.com/video-files/5155630/5155630-uhd_2560_1440_25fps.mp4" type="video/mp4" />
-                </video>
-              )}
-              {index === 4 && (
-                <video
-                  ref={(el) => { videoRefs.current[index] = el }}
-                  loop
-                  muted
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
-                >
-                  <source src="https://videos.pexels.com/video-files/7579657/7579657-uhd_2732_1440_25fps.mp4" type="video/mp4" />
-                </video>
-              )}
-              {index === 5 && (
-                <video
-                  ref={(el) => { videoRefs.current[index] = el }}
-                  loop
-                  muted
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
-                >
-                  <source src="https://videos.pexels.com/video-files/5743045/5743045-uhd_2732_1440_25fps.mp4" type="video/mp4" />
-                </video>
-              )}
+              <video
+                ref={(el) => { videoRefs.current[index] = el }}
+                loop
+                muted
+                playsInline
+                preload="none"
+                className="absolute inset-0 w-full h-full object-cover"
+              >
+                <source src={VIDEO_SOURCES[index]} type="video/mp4" />
+              </video>
               
               {/* Overlay con gradiente sutil para todas las tarjetas */}
               <div 

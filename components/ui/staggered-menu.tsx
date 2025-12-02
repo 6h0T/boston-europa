@@ -406,11 +406,11 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
         >
           <Link href="/" className="sm-logo flex items-center select-none pointer-events-auto relative transition-transform duration-300 ease-out hover:scale-110" aria-label="Ir al inicio">
             {logoUrlLight && logoUrlDark ? (
-              <>
+              <div className="relative h-12" style={{ width: 180 }}>
                 <img
                   src={logoUrlLight}
                   alt="Logo"
-                  className={`sm-logo-img relative z-10 block h-12 w-auto object-contain cursor-pointer transition-opacity duration-300 ${currentLogoVariant === 'light' ? 'opacity-100' : 'opacity-0 absolute'}`}
+                  className={`sm-logo-img absolute top-0 left-0 z-10 block h-12 w-auto object-contain cursor-pointer transition-opacity duration-300 ${currentLogoVariant === 'light' ? 'opacity-100' : 'opacity-0'}`}
                   draggable={false}
                   width={110}
                   height={24}
@@ -418,12 +418,12 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                 <img
                   src={logoUrlDark}
                   alt="Logo"
-                  className={`sm-logo-img relative z-10 block h-12 w-auto object-contain cursor-pointer transition-opacity duration-300 ${currentLogoVariant === 'dark' ? 'opacity-100' : 'opacity-0 absolute'}`}
+                  className={`sm-logo-img absolute top-0 left-0 z-10 block h-12 w-auto object-contain cursor-pointer transition-opacity duration-300 ${currentLogoVariant === 'dark' ? 'opacity-100' : 'opacity-0'}`}
                   draggable={false}
                   width={110}
                   height={24}
                 />
-              </>
+              </div>
             ) : (
               <img
                 src={logoUrl || '/logo.svg'}

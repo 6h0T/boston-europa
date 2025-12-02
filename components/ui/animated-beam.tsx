@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useId, useState, useRef } from "react"
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 
 export interface AnimatedBeamProps {
   className?: string

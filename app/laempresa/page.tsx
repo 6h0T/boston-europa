@@ -1,9 +1,18 @@
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
 import LaEmpresaHero from "@/components/sections/laempresa/hero"
-import LaEmpresaHistoria from "@/components/sections/laempresa/historia"
-import LaEmpresaMVV from "@/components/sections/laempresa/mvv"
+
+// Dynamic imports para lazy loading
+const LaEmpresaHistoria = dynamic(() => import("@/components/sections/laempresa/historia"), {
+  loading: () => <div className="min-h-[500px]" />,
+})
+const LaEmpresaMVV = dynamic(() => import("@/components/sections/laempresa/mvv"), {
+  loading: () => <div className="min-h-[400px]" />,
+})
+const Footer = dynamic(() => import("@/components/footer"), {
+  loading: () => <div className="min-h-[200px]" />,
+})
 
 export const metadata: Metadata = {
   title: "La Empresa | Boston Asset Manager",

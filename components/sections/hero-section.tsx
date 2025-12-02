@@ -1,12 +1,18 @@
 "use client"
-import { useEffect, useRef } from "react"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useEffect, useRef, memo } from "react"
 import { useScrollSnap } from "@/hooks/use-scroll-snap"
 import { useTranslation } from "react-i18next"
-import { ResaltadorDeTexto } from "@/components/ui/resaltador-de-texto"
 
-gsap.registerPlugin(ScrollTrigger)
+// Lazy load GSAP solo cuando se necesita
+let gsapLoaded = false
+const loadGSAP = async () => {
+  if (gsapLoaded) return
+  const { gsap } = await import("gsap")
+  const { ScrollTrigger } = await import("gsap/ScrollTrigger")
+  gsap.registerPlugin(ScrollTrigger)
+  gsapLoaded = true
+  return { gsap, ScrollTrigger }
+}
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -21,39 +27,44 @@ export default function HeroSection() {
 
     const section = sectionRef.current
     const content = contentRef.current
+    let ctx: any
 
-    const ctx = gsap.context(() => {
-      // Animación de zoom out
-      gsap.fromTo(
-        section,
-        {
-          scale: 1,
-        },
-        {
-          scale: 0.85,
+    // Cargar GSAP de forma asíncrona
+    loadGSAP().then((modules) => {
+      if (!modules) return
+      const { gsap } = modules
+
+      ctx = gsap.context(() => {
+        // Animación de zoom out
+        gsap.fromTo(
+          section,
+          { scale: 1 },
+          {
+            scale: 0.85,
+            scrollTrigger: {
+              trigger: section,
+              start: "top top",
+              end: "bottom top",
+              scrub: 1,
+            },
+          }
+        )
+
+        // Animación de fade out del contenido
+        gsap.to(content, {
+          opacity: 0,
+          y: -50,
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: "bottom top",
+            end: "center top",
             scrub: 1,
           },
-        }
-      )
-
-      // Animación de fade out del contenido
-      gsap.to(content, {
-        opacity: 0,
-        y: -50,
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "center top",
-          scrub: 1,
-        },
+        })
       })
     })
 
-    return () => ctx.revert()
+    return () => ctx?.revert()
   }, [])
 
   return (
@@ -71,8 +82,10 @@ export default function HeroSection() {
           loop
           muted
           playsInline
+          preload="metadata"
           className="w-full h-full object-cover"
           style={{ opacity: 0.6 }}
+          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%231d3969' width='1' height='1'/%3E%3C/svg%3E"
         >
           <source src="https://sjjamnou5h3qi4bf.public.blob.vercel-storage.com/10081.mp4" type="video/mp4" />
         </video>

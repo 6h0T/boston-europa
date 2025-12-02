@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useState, type CSSProperties } from "react"
-import { motion } from "motion/react"
+import { useEffect, useState, useRef, type CSSProperties } from "react"
+import { motion, useInView } from "motion/react"
 import { cn } from "@/lib/utils"
 
 interface LightRaysProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -55,7 +55,8 @@ const Ray = ({
   delay,
   duration,
   intensity,
-}: LightRay) => {
+  isVisible,
+}: LightRay & { isVisible: boolean }) => {
   return (
     <motion.div
       className="pointer-events-none absolute -top-[12%] left-[var(--ray-left)] h-[var(--light-rays-length)] w-[var(--ray-width)] origin-top -translate-x-1/2 rounded-full bg-gradient-to-b from-[color-mix(in_srgb,var(--light-rays-color)_70%,transparent)] to-transparent opacity-0 mix-blend-screen blur-[var(--light-rays-blur)]"
@@ -65,11 +66,11 @@ const Ray = ({
           "--ray-width": `${width}px`,
         } as CSSProperties
       }
-      initial={{ rotate: rotate }}
-      animate={{
+      initial={{ rotate: rotate, opacity: 0 }}
+      animate={isVisible ? {
         opacity: [0, intensity, 0],
         rotate: [rotate - swing, rotate + swing, rotate - swing],
-      }}
+      } : { opacity: 0 }}
       transition={{
         duration: duration,
         repeat: Infinity,
@@ -93,6 +94,8 @@ export function LightRays({
   ...props
 }: LightRaysProps) {
   const [rays, setRays] = useState<LightRay[]>([])
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isInViewport = useInView(containerRef, { once: false, margin: "-50px" })
   const cycleDuration = Math.max(speed, 0.1)
 
   useEffect(() => {
@@ -101,7 +104,7 @@ export function LightRays({
 
   return (
     <div
-      ref={ref}
+      ref={containerRef}
       className={cn(
         "pointer-events-none absolute inset-0 isolate overflow-hidden rounded-[inherit]",
         className
@@ -138,7 +141,7 @@ export function LightRays({
           }
         />
         {rays.map((ray) => (
-          <Ray key={ray.id} {...ray} />
+          <Ray key={ray.id} {...ray} isVisible={isInViewport} />
         ))}
       </div>
     </div>
