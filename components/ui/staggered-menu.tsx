@@ -1,8 +1,9 @@
 "use client"
 
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 
 export interface StaggeredMenuItem {
   label: string;
@@ -70,6 +71,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   onMenuOpen,
   onMenuClose
 }: StaggeredMenuProps) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
 
@@ -83,7 +85,16 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
   const textInnerRef = useRef<HTMLSpanElement | null>(null);
   const textWrapRef = useRef<HTMLSpanElement | null>(null);
-  const [textLines, setTextLines] = useState<string[]>(['Menu', 'Close']);
+  
+  // Traducciones para Menu/Cerrar
+  const menuLabel = t('menu.open');
+  const closeLabel = t('menu.close');
+  const [textLines, setTextLines] = useState<string[]>([menuLabel, closeLabel]);
+  
+  // Actualizar textLines cuando cambie el idioma
+  useEffect(() => {
+    setTextLines([menuLabel, closeLabel]);
+  }, [menuLabel, closeLabel]);
 
   const openTlRef = useRef<gsap.core.Timeline | null>(null);
   const closeTweenRef = useRef<gsap.core.Tween | null>(null);
@@ -324,14 +335,14 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
     textCycleAnimRef.current?.kill();
 
-    const currentLabel = opening ? 'Menu' : 'Cerrar';
-    const targetLabel = opening ? 'Cerrar' : 'Menu';
+    const currentLabel = opening ? menuLabel : closeLabel;
+    const targetLabel = opening ? closeLabel : menuLabel;
     const cycles = 3;
 
     const seq: string[] = [currentLabel];
     let last = currentLabel;
     for (let i = 0; i < cycles; i++) {
-      last = last === 'Menu' ? 'Cerrar' : 'Menu';
+      last = last === menuLabel ? closeLabel : menuLabel;
       seq.push(last);
     }
     if (last !== targetLabel) seq.push(targetLabel);
@@ -348,7 +359,7 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
       duration: 0.5 + lineCount * 0.07,
       ease: 'power4.out'
     });
-  }, []);
+  }, [menuLabel, closeLabel]);
 
   const toggleMenu = useCallback(() => {
     const target = !openRef.current;
