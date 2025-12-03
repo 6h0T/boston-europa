@@ -14,6 +14,8 @@ const resources = {
       "menu.investments": "Inversiones",
       "menu.crypto": "Cripto",
       "menu.language": "Idioma",
+      "menu.open": "Menú",
+      "menu.close": "Cerrar",
       
       // Hero
       "hero.title": "Empezá a invertir en solo 3 pasos",
@@ -307,6 +309,8 @@ const resources = {
       "menu.investments": "Investimenti",
       "menu.crypto": "Cripto",
       "menu.language": "Lingua",
+      "menu.open": "Menu",
+      "menu.close": "Chiudi",
       
       "hero.title": "Inizia a investire in soli 3 passi",
       "hero.subtitle": "Con Boston Asset Manager, investire è più facile che mai. Accedi ai mercati dei capitali con consulenza esperta.",
@@ -581,6 +585,8 @@ const resources = {
       "menu.investments": "Investitionen",
       "menu.crypto": "Krypto",
       "menu.language": "Sprache",
+      "menu.open": "Menü",
+      "menu.close": "Schließen",
       
       "hero.title": "Beginnen Sie in nur 3 Schritten zu investieren",
       "hero.subtitle": "Mit Boston Asset Manager war Investieren noch nie so einfach. Greifen Sie mit fachkundiger Beratung auf Kapitalmärkte zu.",
@@ -855,6 +861,8 @@ const resources = {
       "menu.investments": "Investissements",
       "menu.crypto": "Crypto",
       "menu.language": "Langue",
+      "menu.open": "Menu",
+      "menu.close": "Fermer",
       
       "hero.title": "Commencez à investir en seulement 3 étapes",
       "hero.subtitle": "Avec Boston Asset Manager, investir n'a jamais été aussi facile. Accédez aux marchés des capitaux avec des conseils d'experts.",
@@ -1130,6 +1138,8 @@ const resources = {
       "menu.investments": "Investeringar",
       "menu.crypto": "Krypto",
       "menu.language": "Språk",
+      "menu.open": "Meny",
+      "menu.close": "Stäng",
       
       "hero.title": "Börja investera på bara 3 steg",
       "hero.subtitle": "Med Boston Asset Manager har det aldrig varit enklare att investera. Få tillgång till kapitalmarknader med expertrådgivning.",
