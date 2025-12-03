@@ -149,6 +149,7 @@ Proyecto privado - Todos los derechos reservados © Boston Asset Manager
 
 <div align="center">
 
-**[bostonam.eu](https://bostonam.eu)** · Desarrollado por g. para © Boston Asset Manager
+**[bostonam.eu](https://bostonam.eu)** · Desarrollado por g. Todos los derechos reservados © Boston Asset Manager
+
 
 </div>
