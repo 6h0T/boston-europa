@@ -1,6 +1,7 @@
 "use client"
 
 import { useTranslation } from "react-i18next"
+import Link from "next/link"
 
 export default function Footer() {
   const { t } = useTranslation()
@@ -13,6 +14,11 @@ export default function Footer() {
   const companyLinks = Array.isArray(companyItems) ? companyItems : []
   const usefulLinks = Array.isArray(usefulItems) ? usefulItems : []
   const socialLinks = Array.isArray(socialItems) ? socialItems : []
+
+  // Helper to determine if a link is internal
+  const isInternalLink = (href: string) => {
+    return href.startsWith('/') && !href.startsWith('//')
+  }
 
   return (
     <footer className="pt-16 pb-8 px-4 sm:px-6 lg:px-8" style={{ background: "white", color: "var(--saas-text)" }}>
@@ -27,18 +33,28 @@ export default function Footer() {
             <ul className="space-y-2 text-sm" style={{ color: "var(--saas-muted)" }}>
               {usefulLinks.map((item: any, idx: number) => (
                 <li key={idx}>
-                  <a 
-                    href={item.href} 
-                    className="hover:opacity-100 transition"
-                    onClick={(e) => {
-                      if (item.href === '#change-country') {
-                        e.preventDefault()
-                        window.dispatchEvent(new Event('open-country-selector'))
-                      }
-                    }}
-                  >
-                    {item.label}
-                  </a>
+                  {item.href === '#change-country' ? (
+                    <button 
+                      className="hover:opacity-100 transition text-left"
+                      onClick={() => window.dispatchEvent(new Event('open-country-selector'))}
+                    >
+                      {item.label}
+                    </button>
+                  ) : isInternalLink(item.href) ? (
+                    <Link 
+                      href={item.href} 
+                      className="hover:opacity-100 transition"
+                    >
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <a 
+                      href={item.href} 
+                      className="hover:opacity-100 transition"
+                    >
+                      {item.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
