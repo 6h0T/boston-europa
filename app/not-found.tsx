@@ -14,7 +14,7 @@ export default function NotFound() {
         priority
       />
       
-      <h1 className="text-6xl font-bold mb-4">404</h1>
+      <h1 className=" text-6xl font-bold mb-4">404</h1>
       <p className="text-xl text-gray-400 mb-8 text-center">
         La página que buscas no existe o ha sido movida.
       </p>

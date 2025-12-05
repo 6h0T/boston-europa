@@ -1,10 +1,16 @@
 "use client"
 
+import { useRef } from "react"
 import { useTranslation } from "react-i18next"
 import Link from "next/link"
+import { useScrollSnap } from "@/hooks/use-scroll-snap"
 
 export default function Footer() {
+  const sectionRef = useRef<HTMLElement>(null)
   const { t } = useTranslation()
+  
+  // Aplicar scroll snap como las demás secciones
+  useScrollSnap(sectionRef)
 
   // Cast returnObjects to array of objects safely
   const companyItems = t('footer.companyItems', { returnObjects: true })
@@ -21,7 +27,11 @@ export default function Footer() {
   }
 
   return (
-    <footer className="pt-16 pb-8 px-4 sm:px-6 lg:px-8" style={{ background: "white", color: "var(--saas-text)" }}>
+    <footer 
+      ref={sectionRef}
+      className="min-h-screen flex flex-col justify-center pt-16 pb-8 px-4 sm:px-6 lg:px-8" 
+      style={{ background: "white", color: "var(--saas-text)" }}
+    >
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           <div>
