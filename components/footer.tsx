@@ -21,7 +21,10 @@ export default function Footer() {
   }
 
   return (
-    <footer className="pt-16 pb-8 px-4 sm:px-6 lg:px-8" style={{ background: "white", color: "var(--saas-text)" }}>
+    <footer 
+      className="flex flex-col justify-center pt-16 pb-8 px-4 sm:px-6 lg:px-8" 
+      style={{ background: "white", color: "var(--saas-text)" }}
+    >
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           <div>
