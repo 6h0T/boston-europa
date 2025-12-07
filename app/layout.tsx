@@ -101,6 +101,13 @@ export default function RootLayout({
         {/* Preconnect para recursos externos críticos */}
         <link rel="preconnect" href="https://sjjamnou5h3qi4bf.public.blob.vercel-storage.com" />
         <link rel="dns-prefetch" href="https://sjjamnou5h3qi4bf.public.blob.vercel-storage.com" />
+        {/* Prefetch del video hero para carga más rápida */}
+        <link 
+          rel="preload" 
+          href="https://sjjamnou5h3qi4bf.public.blob.vercel-storage.com/10081.mp4" 
+          as="video" 
+          type="video/mp4"
+        />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
         <I18nProvider>

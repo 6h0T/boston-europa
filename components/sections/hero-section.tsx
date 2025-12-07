@@ -26,27 +26,33 @@ const loadGSAP = async () => {
   return { gsap, ScrollTrigger }
 }
 
-// Componente de video lazy - solo carga cuando es visible
+const VIDEO_URL = "https://sjjamnou5h3qi4bf.public.blob.vercel-storage.com/10081.mp4"
+
+// Componente de video optimizado para carga rápida
 function LazyVideo({ isLowEnd }: { isLowEnd: boolean }) {
-  const [shouldLoad, setShouldLoad] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    // Cargar video después de un pequeño delay para no bloquear FCP
-    const timer = setTimeout(() => {
-      setShouldLoad(true)
-    }, 100)
-    return () => clearTimeout(timer)
-  }, [])
-
-  useEffect(() => {
-    // Intentar reproducir cuando el video esté listo
-    if (shouldLoad && videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Silenciar error si autoplay falla
-      })
+    if (isLowEnd || !videoRef.current) return
+    
+    const video = videoRef.current
+    
+    // Manejar cuando el video tiene suficientes datos para reproducir
+    const handleCanPlay = () => {
+      setIsLoaded(true)
+      video.play().catch(() => {})
     }
-  }, [shouldLoad])
+    
+    video.addEventListener('canplay', handleCanPlay)
+    
+    // Si ya puede reproducir (cached)
+    if (video.readyState >= 3) {
+      handleCanPlay()
+    }
+    
+    return () => video.removeEventListener('canplay', handleCanPlay)
+  }, [isLowEnd])
 
   if (isLowEnd) {
     return (
@@ -67,15 +73,12 @@ function LazyVideo({ isLowEnd }: { isLowEnd: boolean }) {
       loop
       muted
       playsInline
-      preload="none"
-      className="w-full h-full object-cover"
-      style={{ opacity: shouldLoad ? 0.6 : 0 }}
+      preload="auto"
+      className="w-full h-full object-cover transition-opacity duration-500"
+      style={{ opacity: isLoaded ? 0.6 : 0 }}
       poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%231d3969' width='1' height='1'/%3E%3C/svg%3E"
-    >
-      {shouldLoad && (
-        <source src="https://sjjamnou5h3qi4bf.public.blob.vercel-storage.com/10081.mp4" type="video/mp4" />
-      )}
-    </video>
+      src={VIDEO_URL}
+    />
   )
 }
 

@@ -15,11 +15,8 @@ const WhyChooseSection = dynamic(() => import("@/components/sections/why-choose-
 const CtaSection = dynamic(() => import("@/components/sections/cta-section"), {
   loading: () => <div className="min-h-[400px]" />,
 })
-const Footer = dynamic(() => import("@/components/footer"), {
-  loading: () => <div className="min-h-[200px]" />,
-})
-const GiantLogoSection = dynamic(() => import("@/components/sections/giant-logo-section"), {
-  loading: () => <div className="min-h-[300px]" />,
+const FooterSection = dynamic(() => import("@/components/sections/footer-section"), {
+  loading: () => <div className="min-h-screen" />,
 })
 
 export default function Home() {
@@ -31,8 +28,7 @@ export default function Home() {
       <BenefitsSection />
       <WhyChooseSection />
       <CtaSection />
-      <Footer />
-      <GiantLogoSection />
+      <FooterSection />
     </main>
   )
 }

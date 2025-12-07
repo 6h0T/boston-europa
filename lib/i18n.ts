@@ -277,10 +277,10 @@ const resources = {
         "usefulItems": [
           { "label": "La empresa", "href": "/laempresa" },
           { "label": "Contacto", "href": "/contacto" },
-          { "label": "Privacidad", "href": "#" },
-          { "label": "Bolsa de Madrid", "href": "#" },
-          { "label": "Banco de España", "href": "#" },
-          { "label": "Política de cookies", "href": "#" },
+          { "label": "Privacidad", "href": "/privacidad" },
+          { "label": "Bolsa de Madrid", "href": "https://www.bolsamadrid.es/" },
+          { "label": "Banco de España", "href": "https://www.bde.es/" },
+          { "label": "Política de cookies", "href": "/politica-cookies" },
           { "label": "Cambiar país", "href": "#change-country" }
         ],
         "networksTitle": "Redes sociales",
