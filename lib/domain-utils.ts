@@ -9,6 +9,7 @@ const languageToDomain: Record<string, string> = {
   fr: 'bostonam.fr',
   it: 'bostonam.it',
   sv: 'bostonam.se',
+  en: 'bostonam.us',
 }
 
 /**
@@ -22,7 +23,7 @@ export function getDomainForLanguage(language: string): string | undefined {
  * Redirige al dominio correspondiente al idioma seleccionado
  * Útil cuando el usuario selecciona un país desde el selector
  * 
- * @param language - Código de idioma (de, es, fr, it, sv)
+ * @param language - Código de idioma (de, es, fr, it, sv, en)
  * @param useRedirect - Si true, redirige al dominio. Si false, solo cambia el idioma localmente
  */
 export function redirectToDomain(language: string, useRedirect: boolean = false): void {
@@ -51,6 +52,7 @@ export function isCountryDomain(): boolean {
     'bostonam.fr', 'www.bostonam.fr', 'bostonassetmanager.fr', 'www.bostonassetmanager.fr',
     'bostonam.it', 'www.bostonam.it', 'bostonassetmanager.it', 'www.bostonassetmanager.it',
     'bostonam.se', 'www.bostonam.se', 'bostonassetmanager.se', 'www.bostonassetmanager.se',
+    'bostonam.us', 'www.bostonam.us', 'bostonassetmanager.us', 'www.bostonassetmanager.us',
   ]
   
   return countryDomains.includes(hostname)
@@ -78,11 +80,13 @@ export function getLanguageFromDomain(): string | null {
     'bostonam.fr': 'fr',
     'bostonam.it': 'it',
     'bostonam.se': 'sv',
+    'bostonam.us': 'en',
     'bostonassetmanager.de': 'de',
     'bostonassetmanager.es': 'es',
     'bostonassetmanager.fr': 'fr',
     'bostonassetmanager.it': 'it',
     'bostonassetmanager.se': 'sv',
+    'bostonassetmanager.us': 'en',
   }
   
   return domainToLanguage[hostname] || null

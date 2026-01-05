@@ -116,6 +116,7 @@ export default function Navbar() {
     { code: "de", label: "Deutsch", flag: "🇩🇪" },
     { code: "fr", label: "Français", flag: "🇫🇷" },
     { code: "sv", label: "Svenska", flag: "🇸🇪" },
+    { code: "en", label: "English", flag: "🇺🇸" },
   ]
 
   const socialItems = [

@@ -40,6 +40,12 @@ const domainToLanguage: Record<string, string> = {
   'bostonassetmanager.se': 'sv',
   'www.bostonassetmanager.se': 'sv',
   
+  // Estados Unidos
+  'bostonam.us': 'en',
+  'www.bostonam.us': 'en',
+  'bostonassetmanager.us': 'en',
+  'www.bostonassetmanager.us': 'en',
+  
   // Dominio base (selector de países)
   'bostonam.eu': 'selector',
   'www.bostonam.eu': 'selector',

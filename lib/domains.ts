@@ -47,6 +47,10 @@ export const domains: DomainConfig[] = [
   // Suecia
   { domain: 'bostonam.se', language: 'sv', country: 'Suecia', countryCode: 'SE', isSelector: false },
   { domain: 'bostonassetmanager.se', language: 'sv', country: 'Suecia', countryCode: 'SE', isSelector: false },
+  
+  // Estados Unidos
+  { domain: 'bostonam.us', language: 'en', country: 'United States', countryCode: 'US', isSelector: false },
+  { domain: 'bostonassetmanager.us', language: 'en', country: 'United States', countryCode: 'US', isSelector: false },
 ]
 
 // Mapeo rápido de dominio a idioma
@@ -61,6 +65,7 @@ export const languageToDomain: Record<string, string> = {
   fr: 'bostonam.fr',
   it: 'bostonam.it',
   sv: 'bostonam.se',
+  en: 'bostonam.us',
 }
 
 // Dominios que muestran el selector
