@@ -8,17 +8,18 @@ import Image from "next/image"
 
 interface Country {
   code: string
-  names: string[] // Nombres en cada idioma [ES, IT, DE, FR, SV]
+  names: string[] // Nombres en cada idioma [ES, IT, DE, FR, SV, EN]
   flag: string
   language: string
 }
 
 const countries: Country[] = [
-  { code: "IT", names: ["Italia", "Italia", "Italien", "Italie", "Italien"], flag: "https://flagcdn.com/it.svg", language: "it" },
-  { code: "ES", names: ["España", "Spagna", "Spanien", "Espagne", "Spanien"], flag: "https://flagcdn.com/es.svg", language: "es" },
-  { code: "DE", names: ["Alemania", "Germania", "Deutschland", "Allemagne", "Tyskland"], flag: "https://flagcdn.com/de.svg", language: "de" },
-  { code: "FR", names: ["Francia", "Francia", "Frankreich", "France", "Frankrike"], flag: "https://flagcdn.com/fr.svg", language: "fr" },
-  { code: "SE", names: ["Suecia", "Svezia", "Schweden", "Suède", "Sverige"], flag: "https://flagcdn.com/se.svg", language: "sv" },
+  { code: "IT", names: ["Italia", "Italia", "Italien", "Italie", "Italien", "Italy"], flag: "https://flagcdn.com/it.svg", language: "it" },
+  { code: "ES", names: ["España", "Spagna", "Spanien", "Espagne", "Spanien", "Spain"], flag: "https://flagcdn.com/es.svg", language: "es" },
+  { code: "DE", names: ["Alemania", "Germania", "Deutschland", "Allemagne", "Tyskland", "Germany"], flag: "https://flagcdn.com/de.svg", language: "de" },
+  { code: "FR", names: ["Francia", "Francia", "Frankreich", "France", "Frankrike", "France"], flag: "https://flagcdn.com/fr.svg", language: "fr" },
+  { code: "SE", names: ["Suecia", "Svezia", "Schweden", "Suède", "Sverige", "Sweden"], flag: "https://flagcdn.com/se.svg", language: "sv" },
+  { code: "US", names: ["Estados Unidos", "Stati Uniti", "Vereinigte Staaten", "États-Unis", "USA", "United States"], flag: "https://flagcdn.com/us.svg", language: "en" },
 ]
 
 const translations = {
@@ -28,6 +29,7 @@ const translations = {
     "Wähle dein Land",         // Alemán
     "Sélectionnez votre pays", // Francés
     "Välj ditt land",          // Sueco
+    "Select your country",     // Inglés
   ],
   subtitle: [
     "Elige tu ubicación para personalizar tu experiencia",           // Español
@@ -35,6 +37,7 @@ const translations = {
     "Wähle deinen Standort, um dein Erlebnis zu personalisieren",  // Alemán
     "Choisissez votre emplacement pour personnaliser votre expérience", // Francés
     "Välj din plats för att anpassa din upplevelse",               // Sueco
+    "Choose your location to personalize your experience",         // Inglés
   ],
 }
 
@@ -46,7 +49,7 @@ export default function CountrySelector({ onSelect }: { onSelect: (language: str
   // Sincronizar el índice de idioma con la rotación del título
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentLangIndex((prev) => (prev + 1) % 5)
+      setCurrentLangIndex((prev) => (prev + 1) % 6)
     }, 3000) // Mismo duration que WordRotate
     return () => clearInterval(interval)
   }, [])
@@ -121,7 +124,7 @@ export default function CountrySelector({ onSelect }: { onSelect: (language: str
             />
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             {countries.map((country, index) => (
               <motion.button
                 key={country.code}
